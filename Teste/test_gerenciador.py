@@ -3,20 +3,23 @@ from fastapi import applications, status
 from gerenciador_tarefa.gerenciador import app, TAREFA
 
 
-def  test_lista_tarefa_retorno_200():
+def test_lista_tarefa_retorno_200():
     client = TestClient(app)
     response = client.get("/tarefa")
     assert response.status_code == status.HTTP_200_OK
 
+
 def test_lista_tarefas_formato_json():
     client = TestClient(app)
     response = client.get("/tarefa")
-    assert response.headers['Content-Type']  == "application/json"
+    assert response.headers['Content-Type'] == "application/json"
+    
 
 def test_lista_tarefas_formato_lista():
     client = TestClient(app)
     response = client.get("/tarefa")
     assert isinstance(response.json(), list)
+
 
 def test_listar_tarefa_retorno_id():
     TAREFA.append({"id": 1})
@@ -25,6 +28,7 @@ def test_listar_tarefa_retorno_id():
     assert "id" in response.json().pop()
     TAREFA.clear()
 
+
 def test_listar_tarefa_retorno_titulo():
     TAREFA.append({"titulo": "Boku no Hero"})
     client = TestClient(app)
@@ -32,12 +36,14 @@ def test_listar_tarefa_retorno_titulo():
     assert "titulo" in response.json().pop()
     TAREFA.clear()
 
+
 def test_listar_tarefa_retorno_descricao():
     TAREFA.append({"descricao": "anime"})
     client = TestClient(app)
     response = client.get("/tarefa")
     assert "descricao" in response.json().pop()
     TAREFA.clear()
+
 
 def test_listar_tarefa_retorno_estado():
     TAREFA.append({"estado": "lancando"})
